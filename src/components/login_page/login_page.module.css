@@ -9,10 +9,10 @@
 }
 
 .loginBtn {
-  cursor:pointer;
-  transition: all .2s ease;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.loginBtn:hover{
+.loginBtn:hover {
   background-color: #909090;
 }

@@ -4,18 +4,26 @@ import Alert from './flesh_message/Alert';
 
 const LoginPage = ({ requestLogin }) => {
   const [alert, setAlert] = useState(false);
+  const [timerId, setTimerId] = useState(false);
   const userNameRef = useRef();
 
   const invokeAlert = (userName) => {
-    setAlert(userName)
-    if (!alert) {
+    setAlert(userName);
+    if (timerId) clearTimeout(timerId);
+    setTimerId(
       setTimeout(() => {
-        setAlert(false);
-      }, 1500);
-    }
+        hideAlert();
+      }, 2000),
+    );
   };
-  const onLogin = () => {
+
+  const hideAlert = () => setAlert(false);
+
+  const onLogin = (e) => {
+    e.preventDefault();
     const userName = userNameRef.current.value;
+    if(!userName) return;
+    userNameRef.current.value = '';
     const result = requestLogin(userName);
     if (!result) invokeAlert(userName);
   };
@@ -23,16 +31,11 @@ const LoginPage = ({ requestLogin }) => {
   return (
     <div className={styles.main}>
       <h3>Hello!!</h3>
-      <div className={styles.loginForm}>
+      <form onSubmit={onLogin} className={styles.loginForm}>
         <input ref={userNameRef} type='text' placeholder='yourName' />
-        <input
-          onClick={onLogin}
-          className={styles.loginBtn}
-          type='button'
-          value='Join!!'
-        />
-      </div>
-        {alert ? <Alert userName={alert} /> : null}
+        <input className={styles.loginBtn} type='button' value='Join!!' />
+      </form>
+      {alert ? <Alert userName={alert} /> : null}
     </div>
   );
 };
