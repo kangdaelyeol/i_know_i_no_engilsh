@@ -1,23 +1,24 @@
 import React, { useState } from 'react';
 import Item from '../item/Item';
 import styles from './items.module.css';
-
-const Items = ({ item }) => {
+import CreateForm from '../create_form/CreateForm';
+const Items = ({ items, setCreateModel, onCreateItem }) => {
   const [focus, setFocus] = useState(false);
 
   return (
     <div className={styles.main}>
       <div clasName={styles.gridTemplate}>
-        {Object.keys(item).maps((key) => {
-          <Item
+        {Object.keys(items).map((key) => {
+          return <Item
             key={key}
             id={key}
             currnetFocus={focus}
             setFocus={setFocus}
-            date={item[key].date}
-            length={item[key].length}
+            date={items[key].date}
+            length={items[key].length}
           />;
         })}
+        <CreateForm onCreateItem={onCreateItem} setCreateModel={setCreateModel}/>
       </div>
     </div>
   );
