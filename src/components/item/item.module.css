@@ -1,0 +1,10 @@
+.main{
+  width:240px;
+  height: 240px;
+  background-color: #eeeeee;
+  transition: all .2s ease;
+}
+
+.isFocus {
+  background-color: #bbbbbb;
+}

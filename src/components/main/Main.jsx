@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom"
 import styles from './main.module.css';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
+import Statusbar from '../statusbar/Statusbar';
 
 const Main = ({ login, setLogin }) => {
   const { id, userName } = login;
@@ -15,6 +16,7 @@ const Main = ({ login, setLogin }) => {
   return (
     <div className={styles.main}>
       <Header setLogin={setLogin}/>
+      <Statusbar avatar={null} userName={userName} />
       <h1>Main!</h1>
       <h2>hello{userName}!</h2>
       <h2>your Id: {id}</h2>

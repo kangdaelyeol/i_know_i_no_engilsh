@@ -1,0 +1,13 @@
+.main {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.gridTemplate{
+  width:80%;
+  display: grid;
+  grid-template-columns: repeat(4, 300px);
+  grid-auto-rows: 250px;
+  justify-items: center;
+  align-items: center;
+}
