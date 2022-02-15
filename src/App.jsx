@@ -34,7 +34,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Login login={login} requestLogin={requestLogin} />} />
         <Route path='/main' element={<Main login={login} setLogin={setLogin} />} />
-      </Routes>
+       </Routes>
     </BrowserRouter>
   );
 };

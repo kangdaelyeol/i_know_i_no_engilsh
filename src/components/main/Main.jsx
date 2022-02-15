@@ -6,11 +6,26 @@ import Footer from '../footer/Footer';
 import Statusbar from '../statusbar/Statusbar';
 import Items from '../items/items';
 import myItems from '../fakeDB';
+import ItemSetting from "../item_setting/ItemSetting"
 
-const getToday = () => new Date().toISOString(0, 10);
+const getToday = () => {
+  const today = new Date();
+  return today.toISOString(0, 10);
+}
 
 const Main = ({ login, setLogin }) => {
   const [items, setItems] = useState(myItems);
+  const [questions, setStateQuestions] = useState(false);
+
+  const setQuestions = (id) => {
+    const myQuestions = items[id].questions;
+    const newQuestions = {};
+    Object.keys(questions).forEach(key => {
+      newQuestions[key] = {...myQuestions[key]};
+    }); 
+    setStateQuestions(newQuestions);
+  }
+
   const { id, userName } = login;
   console.log(id, userName);
   const navigate = useNavigate();
@@ -41,7 +56,10 @@ const Main = ({ login, setLogin }) => {
       <Header setLogin={setLogin}/>
       <Statusbar avatar={null} userName={userName} />
       <h1>My Quiz</h1>
-      <Items onCreateItem={createItem} items={items} />
+      {questions
+       ? <ItemSetting setStateQuestions={setStateQuestions} questions={questions} login={login} />
+       : <Items setQuestions={setQuestions} onCreateItem={createItem} items={items} />
+      }
       <Footer />
     </div>
   );

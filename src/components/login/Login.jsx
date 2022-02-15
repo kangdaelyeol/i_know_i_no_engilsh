@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useNavigate} from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import styles from './login.module.css';
 import LoginPage from '../login_page/LoginPage';
 import Header from '../header/Header';
