@@ -30,8 +30,8 @@ const Item = ({title, date, length, id, currentFocus, setFocus, setQuestions}) =
   return (<div className={`${styles.main} ${isFocus ? styles.focus : ""}`} onClick={onSetFocus}>
     <h3 className={styles.title}>{title}</h3>
     <div className={styles.descriptionBox}>
-      <span>{date || ""}</span>
-      <span>{length || ""}</span>
+      <span>CreateAt: {date || ""}</span>
+      <span>Quiz: {length || ""}</span>
     </div>
     <div className={styles.selectBox}>
       <button onClick={onButtonClick} name='setting' className={styles.btn}>setting</button>

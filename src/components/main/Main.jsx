@@ -1,30 +1,40 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from 'react-router-dom';
 import styles from './main.module.css';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 import Statusbar from '../statusbar/Statusbar';
 import Items from '../items/items';
 import myItems from '../fakeDB';
-import ItemSetting from "../item_setting/ItemSetting"
+import ItemSetting from '../item_setting/ItemSetting';
 
-const getToday = () => {
-  const today = new Date();
-  return today.toISOString(0, 10);
-}
+const getToday = () => new Date().toISOString().substring(0, 10);
 
 const Main = ({ login, setLogin }) => {
-  const [items, setItems] = useState(myItems);
-  const [questions, setStateQuestions] = useState(false);
+  const [user, setUser] = useState(myItems);
+  const [settingInfo, setStateQuestions] = useState(false);
 
-  const setQuestions = (id) => {
-    const myQuestions = items[id].questions;
-    const newQuestions = {};
-    Object.keys(questions).forEach(key => {
-      newQuestions[key] = {...myQuestions[key]};
-    }); 
-    setStateQuestions(newQuestions);
-  }
+  const setQuestions = (itemId) => {
+    const myQuestions = user[itemId].questions;
+    // settingInfo -> { itemId, onSettingQuestions}
+    const onSettingQuestions = {};
+    Object.keys(myQuestions).forEach((key) => {
+      onSettingQuestions[key] = { ...myQuestions[key] };
+    });
+    const newSettingInfo = { itemId, onSettingQuestions };
+    setStateQuestions(newSettingInfo);
+  };
+
+  const onSave = () => {
+    const newUser = {};
+    const { itemId, onSettingQuestions } = settingInfo;
+    Object.keys(user).forEach((key) => {
+      newUser[key] = user[key];
+    });
+    newUser[itemId].questions = {...onSettingQuestions};
+    console.log(newUser);
+    setUser(newUser);
+  };
 
   const { id, userName } = login;
   console.log(id, userName);
@@ -32,34 +42,46 @@ const Main = ({ login, setLogin }) => {
   useEffect(() => {
     if (!login) navigate('/');
   }, [login, navigate]);
-  
+
   const createItem = (title) => {
     // TO DO -> make item
     const id = Date.now();
-    const newItems = {};
+    const newUser = {};
     const newItem = {
       id,
       title,
       length: 0,
       date: getToday(),
-    }
+    };
 
-    Object.keys(items).forEach(key => {
-      newItems[key] = {...items[key]};
+    Object.keys(user).forEach((key) => {
+      newUser[key] = { ...user[key] };
     });
 
-    newItems[id] = newItem;
-    setItems(newItems);
-  }
+    newUser[id] = newItem;
+    setUser(newUser);
+  };
+
   return (
     <div className={styles.main}>
-      <Header setLogin={setLogin}/>
+      <Header setLogin={setLogin} />
       <Statusbar avatar={null} userName={userName} />
       <h1>My Quiz</h1>
-      {questions
-       ? <ItemSetting setStateQuestions={setStateQuestions} questions={questions} login={login} />
-       : <Items setQuestions={setQuestions} onCreateItem={createItem} items={items} />
-      }
+      settingInfo
+      {settingInfo ? (
+        <ItemSetting
+          onSave={onSave}
+          setStateQuestions={setStateQuestions}
+          settingInfo={settingInfo}
+          login={login}
+        />
+      ) : (
+        <Items
+          setQuestions={setQuestions}
+          onCreateItem={createItem}
+          items={user}
+        />
+      )}
       <Footer />
     </div>
   );

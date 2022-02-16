@@ -9,7 +9,7 @@ const Statusbar = ({avatar, userName}) => {
     <span className={styles.userName}>{userName || ""}</span>
    </div>
    <div className={styles.right}></div>
-   <button className={styles.navBtn}>Setting</button>
+   <button className={styles.navBtn}>profile Setting</button>
  </div>)
 }
 
