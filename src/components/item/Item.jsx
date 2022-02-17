@@ -2,13 +2,14 @@ import React from 'react';
 import styles from './item.module.css';
 
 const Item = ({title, date, length, id, currentFocus, setFocus, setQuestions}) => {
-
+  const isFocus = Number(id) === currentFocus;
   const onSetFocus = (e) => {
     if(Number(id) === currentFocus) setFocus(false);
     else setFocus(Number(id));
   }
   
   const onButtonClick = (e) => {
+    e.stopPropagation();
     const buttonName = e.currentTarget.name;
     switch (buttonName) {
       case "setting":
@@ -25,7 +26,6 @@ const Item = ({title, date, length, id, currentFocus, setFocus, setQuestions}) =
     }
   }
   
-  const isFocus = Number(id) === currentFocus;
 
   return (<div className={`${styles.main} ${isFocus ? styles.focus : ""}`} onClick={onSetFocus}>
     <h3 className={styles.title}>{title}</h3>

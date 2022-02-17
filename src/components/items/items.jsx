@@ -7,21 +7,21 @@ const Items = ({ items, setCreateModel, onCreateItem, setQuestions }) => {
 
   return (
     <div className={styles.main}>
-      <div clasName={styles.gridTemplate}>
-        {Object.keys(items).map((key) => {
-          return <Item
+      {Object.keys(items).map((key) => {
+        return (
+          <Item
             key={key}
             id={key}
             title={items[key].title}
-            currnetFocus={focus}
+            currentFocus={focus}
             setFocus={setFocus}
             date={items[key].date}
             length={items[key].length}
             setQuestions={setQuestions}
-          />;
-        })}
-        <CreateForm onCreateItem={onCreateItem} setCreateModel={setCreateModel}/>
-      </div>
+          />
+        );
+      })}
+      <CreateForm onCreateItem={onCreateItem} setCreateModel={setCreateModel} />
     </div>
   );
 };
