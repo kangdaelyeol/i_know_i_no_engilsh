@@ -5,62 +5,77 @@ import Question from '../question/Question';
 
 const ItemSetting = ({ login, settingInfo, setStateQuestions, onSave }) => {
   const navigate = useNavigate();
-  const { itemTitle, onSettingQuestions, itemId } = settingInfo;
+  const { title, id, questions } = settingInfo;
   const titleRef = useRef();
-  // use Effect
+
+  /* login Check */
   useEffect(() => {
     if (!login) {
       navigate('/');
     }
   }, [navigate, login]);
 
+  /* Setting -> 다른 itemSetting 바로 넘어갈 때 Value Check */
+  // defalutValue값 -> Render마다 변경되지 않더라
+  // useEffect로 Ref를 잡아서 값이 같지 않으면 
+  // input의 value값을 변경시켜서 동기화 시킴. 
+  useEffect(() => {
+    // console.log("RefVal: ", titleRef.current.value);
+    // console.log("itemTitle: ", itemTitle);
+    
+    // change refValue
+    if(titleRef.current.value !== title);
+      titleRef.current.value = title;
+  },[title]);
+
   // Add Item
   const onAddItem = () => {
-    const newQuestions = {};
+    const id = Date.now();
     const newQuestion = {
-      id: Date.now(),
+      id,
       question: '',
       answer: '',
     };
-
-    Object.keys(onSettingQuestions).forEach((key) => {
-      newQuestions[key] = { ...onSettingQuestions[key] };
+    setStateQuestions((state) => {
+      const newState = {...state};
+      // questions - false인 경우
+      if(!newState.questions){
+        newState.questions = {
+          id: newQuestion
+        };
+      } 
+      else
+        newState.questions[id] = newQuestion;
+      return newState;
     });
-    newQuestions[newQuestion.id] = newQuestion;
-    setStateQuestions({ itemId, onSettingQuestions: newQuestions });
   };
 
+  // ChangeInput
   const onChangeInput = (questionId, question, answer) => {
-    const newQuestions = {};
-    const changedQuestions = {
-      id: questionId,
-      question,
-      answer,
-    };
-    Object.keys(onSettingQuestions).forEach((key) => {
-      newQuestions[key] = { ...onSettingQuestions[key] };
+    setStateQuestions((state) => {
+      const newState = {...state};
+      newState.questions[questionId] = {
+        id: questionId,
+        question,
+        answer
+      }
+      return newState;
     });
-    newQuestions[questionId] = changedQuestions;
-    setStateQuestions({ itemTitle, itemId, onSettingQuestions: newQuestions });
   };
 
   const onDeleteQuestion = (id) => {
-    const newQuestions = {};
-    delete onSettingQuestions[id];
-    Object.keys(onSettingQuestions).forEach((key) => {
-      newQuestions[key] = { ...onSettingQuestions[key] };
-    });
     setStateQuestions((state) => {
-      console.log(state);
-      return {
-        ...state,
-        onSettingQuestions: newQuestions,
-      };
+      const newState = {...state};
+      delete newState.questions[id];
+      // 삭제후 length가 0인 경우
+      if(Object.keys(newState.questions).length === 0)
+        newState.questions = false;
+      return newState;
     });
   };
 
   const onSaveBtnClick = () => {
-    onSave();
+    onSave(id);
   };
 
   const onBackBtnClick = () => {
@@ -68,14 +83,11 @@ const ItemSetting = ({ login, settingInfo, setStateQuestions, onSave }) => {
   };
 
   const changeTitle = () => {
-    const itemTitle = titleRef.current.value;
-
+    const title = titleRef.current.value;
     setStateQuestions((state) => {
-      console.log(state);
-      return { ...state, itemTitle };
+      return { ...state, title};
     });
   };
-  console.log(itemTitle);
 
   return (
     <div className={styles.main}>
@@ -84,12 +96,12 @@ const ItemSetting = ({ login, settingInfo, setStateQuestions, onSave }) => {
         ref={titleRef}
         type='text'
         placeholder='title'
-        defaultValue={itemTitle}
       />
-      {Object.keys(onSettingQuestions).map((key) => (
+      { questions &&
+      Object.keys(questions).map((key) => (
         <Question
-          question={onSettingQuestions[key].question}
-          answer={onSettingQuestions[key].answer}
+          question={questions[key].question}
+          answer={questions[key].answer}
           key={key}
           id={key}
           onChangeInput={onChangeInput}

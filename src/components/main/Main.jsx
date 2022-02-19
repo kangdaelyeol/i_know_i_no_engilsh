@@ -13,35 +13,56 @@ const getToday = () => new Date().toISOString().substring(0, 10);
 const Main = ({ login, setLogin }) => {
   const [user, setUser] = useState(myItems);
   const [settingInfo, setStateQuestions] = useState(false);
-  const setQuestions = (itemId) => {
-    const myQuestions = user[itemId].questions;
-    // settingInfo -> { itemTitle, itemId, onSettingQuestions}
-    const onSettingQuestions = {};
-    Object.keys(myQuestions).forEach((key) => {
-      onSettingQuestions[key] = { ...myQuestions[key] };
-    });
-    const newSettingInfo = {
-      itemTitle: user[itemId].title,
-      itemId,
-      onSettingQuestions,
-    };
-    setStateQuestions(newSettingInfo);
-  };
-
-  const onSave = () => {
-    const newUser = {};
-    const { itemId, itemTitle, onSettingQuestions } = settingInfo;
-    const quizLength = Object.keys(onSettingQuestions).length;
-    Object.keys(user).forEach((key) => {
-      newUser[key] = { ...user[key] };
-    });
-    newUser[itemId].questions = { ...onSettingQuestions };
-    newUser[itemId].length = quizLength;
-    newUser[itemId].title = itemTitle;
-    setUser(newUser);
-  };
-
+  
   const { id, userName } = login;
+  const setQuestions = (itemId) => {
+    setStateQuestions((state) => {
+      const newItem = {
+        ...state[itemId]
+      }
+      // newQuestions
+      let newQuestions = {};
+      // 모든 객체 Ref값 변경후 넘기기
+      const length = newItem.length;
+      // length = 0 -> questions = false
+      if(length !== "0"){
+        Object.keys(newItem.questions).forEach(key => {
+          newQuestions[key] = {
+            // newQuestion
+            ...newItem.questions[key]
+          }
+        })
+      } else {
+        newQuestions = false;
+      }
+      newItem[itemId].questions = newQuestions;
+      return newItem
+    });
+  };
+
+  const consoleUser = () => {
+    console.log("user", user);
+    console.log("settingInfo", settingInfo);
+
+  }
+
+  const onSave = (id) => {
+    // length => questions의 길이
+    // questions -> false인 경우 keys 안먹힘
+    
+    // TO Do -> object Ref값 재생성 -> 넘김
+    const length = settingInfo.questions ? Object.keys(settingInfo.questions).length : "0";
+    setUser((state) => {
+      const newUser = {...state};
+      newUser[id] = {
+        ...settingInfo,
+        length
+      }
+      console.log(newUser[id]);
+      return newUser;
+    })
+  };
+
   console.log(id, userName);
   const navigate = useNavigate();
   useEffect(() => {
@@ -51,20 +72,18 @@ const Main = ({ login, setLogin }) => {
   const createItem = (title) => {
     // TO DO -> make item
     const id = Date.now();
-    const newUser = {};
     const newItem = {
       id,
       title,
       length: 0,
       date: getToday(),
+      questions: false
     };
-
-    Object.keys(user).forEach((key) => {
-      newUser[key] = { ...user[key] };
+    setUser((state) => {
+      const newUser = {...state};
+      newUser[id] = newItem;
+      return newUser
     });
-
-    newUser[id] = newItem;
-    setUser(newUser);
   };
 
   return (
@@ -94,6 +113,7 @@ const Main = ({ login, setLogin }) => {
           )}
         </div>
       </div>
+      <button onClick={consoleUser}>console</button>
       <Footer />
     </div>
   );

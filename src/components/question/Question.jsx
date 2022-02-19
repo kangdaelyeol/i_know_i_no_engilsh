@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useEffect} from 'react';
 import styles from './question.module.css';
 
 const Question = ({ question, answer, id, onChangeInput, onDeleteQuestion }) => {
@@ -12,10 +12,17 @@ const Question = ({ question, answer, id, onChangeInput, onDeleteQuestion }) => 
       id, questionValue, answerValue
     );
   }
-
   const deleteQuestion = () => {
     onDeleteQuestion(id);
   }
+
+  useEffect( () => {
+    if(question !== questionRef.current.value)
+    questionRef.current.value = question;
+    if(answer !== answerRef.current.value)
+    answerRef.current.value = answer;
+    console.log("useEffect -> question, answer");
+  }, [question, answer]); 
 
   return (
     <div className={styles.main}>
