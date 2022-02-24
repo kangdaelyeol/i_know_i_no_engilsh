@@ -1,19 +1,12 @@
 import React, { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styles from './itemSetting.module.css';
 import Question from '../question/Question';
 
-const ItemSetting = ({ login, settingInfo, setStateQuestions, onSave }) => {
-  const navigate = useNavigate();
+const ItemSetting = ({ settingInfo, setStateQuestions, onSave }) => {
   const { title, id, questions } = settingInfo;
   const titleRef = useRef();
 
-  /* login Check */
-  useEffect(() => {
-    if (!login) {
-      navigate('/');
-    }
-  }, [navigate, login]);
+
 
   /* Setting -> 다른 itemSetting 바로 넘어갈 때 Value Check */
   // defalutValue값 -> Render마다 변경되지 않더라

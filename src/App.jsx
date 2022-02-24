@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/login/Login';
 import Main from './components/main/Main';
+import Quiz from './components/quiz/Quiz';
 
 const fakeDB = {
   users: {
@@ -32,8 +33,9 @@ const App = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Login login={login} requestLogin={requestLogin} />} />
-        <Route path='/main' element={<Main login={login} setLogin={setLogin} />} />
+        <Route path='/' element={<Login loginInfo={login} requestLogin={requestLogin} />} />
+        <Route path='/main' element={<Main loginInfo={login} setLogin={setLogin} />} />
+        <Route path='/quiz' element={<Quiz />} />
        </Routes>
     </BrowserRouter>
   );

@@ -5,14 +5,14 @@ import LoginPage from '../login_page/LoginPage';
 import Header from '../header/Header';
 import Footer from '../footer/Footer';
 
-const Login = ({login, requestLogin}) => {
+const Login = ({loginInfo, requestLogin}) => {
   const navigate = useNavigate();
   // Login 상태에 따라서 넘김
   useEffect(() => {
-    if(login.state){
+    if(loginInfo.state){
       navigate("/main"); 
     }
-  }, [login, navigate]);
+  }, [loginInfo, navigate]);
   return (
     <div className={styles.main}>
       <Header />
