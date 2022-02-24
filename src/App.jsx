@@ -4,14 +4,6 @@ import Login from './components/login/Login';
 import Main from './components/main/Main';
 import Quiz from './components/quiz/Quiz';
 
-const fakeDB = {
-  users: {
-    rkdeofuf: {
-      id: "rkdeofuf",
-      userName: "대렬"
-    }
-  }
-}
 
 
 
@@ -21,23 +13,14 @@ const App = () => {
   // Login State 있는 컴포넌트 안에서
   // 해당 state 변수를 사용하는 Logic을 만들어야 함니다.
   // login 정보가 있는지 정보를 반환
-  const requestLogin = (userName => {
-    // DB 검사한다 가정
-    const userInfo = fakeDB.users[userName];
-
-    if(!userInfo)  
-    return false;
-    else {
-      setLogin(userInfo);
-      return true;
-    }
-  }
 
 
   return (
     <BrowserRouter>
       <Routes>
-        <Route path='/' element={<Login loginInfo={login} requestLogin={requestLogin} />} />
+        <Route path='/' element=
+          {<Login loginInfo=
+          {login} />} />
         <Route path='/main' element={<Main loginInfo={login} setLogin={setLogin} />} />
         <Route path='/quiz' element={<Quiz />} />
        </Routes>
