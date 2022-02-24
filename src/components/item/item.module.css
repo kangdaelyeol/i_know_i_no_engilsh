@@ -1,0 +1,11 @@
+.main{
+  transition: all .2s ease;
+}
+
+.isFocus {
+  background-color: #bbbbbb;
+}
+
+.focus {
+  background-color: #999999;
+}
