@@ -11,30 +11,29 @@ import Converter from '../../factory/converter';
 
 const Copier = new Converter();
 
-
 const Main = ({ loginInfo, setLogin }) => {
   const [user, setUser] = useState(myItems);
   const [settingInfo, setStateQuestions] = useState(false);
   const navigate = useNavigate();
 
-  
   const { id, userName } = loginInfo;
   const setQuestions = (itemId) => {
-    setStateQuestions(state => {
+    setStateQuestions((state) => {
       return Copier.copyItem(user[itemId]);
-    })
+    });
   };
   const startQuiz = (itemId) => {
-    console.log("onStartQuiz");
-    const newQuestions = Copier.copyQuestions(user[itemId].newQuestions);
-    navigate("/quiz",{
-      state: newQuestions
+    console.log('onStartQuiz', itemId);
+    console.log(user[itemId]);
+    const newQuestions = Copier.copyQuestions(user[itemId].questions);
+    navigate('/quiz', {
+      state: newQuestions,
     });
-  }
+  };
   const consoleUser = () => {
-    console.log("user", user);
-    console.log("settingInfo", settingInfo);
-  }
+    console.log('user', user);
+    console.log('settingInfo', settingInfo);
+  };
   useEffect(() => {
     if (!loginInfo) navigate('/');
   }, [loginInfo, navigate]);
@@ -42,31 +41,29 @@ const Main = ({ loginInfo, setLogin }) => {
   const onSave = (id) => {
     // user[id](Item) <- settingInfo(Item)
     const newItem = Copier.copyItem(settingInfo);
-    setUser(state => {
-      const newUser = {...state};
+    setUser((state) => {
+      const newUser = { ...state };
       newUser[id] = newItem;
       return newUser;
-    })
+    });
   };
-
 
   const createItem = (title) => {
     // TO DO -> make item
     const newItem = Copier.createNewItem(title);
     setUser((state) => {
-      const newUser = {...state};
+      const newUser = { ...state };
       newUser[newItem.id] = newItem;
-      return newUser
+      return newUser;
     });
   };
-
   const deleteItem = (id) => {
-    setUser(state => {
-      const newUser ={...state};
+    setUser((state) => {
+      const newUser = { ...state };
       delete newUser[id];
       return newUser;
-    })
-  }
+    });
+  };
 
   return (
     <div className={styles.main}>
