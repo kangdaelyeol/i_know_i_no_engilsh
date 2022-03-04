@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './components/login/Login';
 import Main from './components/main/Main';
 import Quiz from './components/quiz/Quiz';
+import Board from './components/board/Board';
 
 const App = () => {
   const [login, setLogin] = useState(false);
@@ -34,6 +35,7 @@ const App = () => {
           element={<Main loginInfo={login} setLogin={setLogin} />}
         />
         <Route path='/quiz' element={<Quiz />} />
+        <Route path='/board' element={<Board />} />
       </Routes>
     </BrowserRouter>
   );
